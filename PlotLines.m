@@ -1,20 +1,18 @@
-function PlotLines(linez,BWimg)
+function  outputangle = PlotLines(linez,BWimg)
 lines = linez;
-
+i = 0;
 %find center of image
 center = round(size(BWimg)/2);
 centerx = center(1,2);
 centery = center(1,1);
 centerarea = round((center(1,1))/4);
 
-%A PART THAT DETERMINES IF THE SMALL HAND IS COVERED BY THE BIG HAND MUST
-%BE MADE
-
 %exit function if no lines were detected
-lenlin = length(lines);
-if lenlin == 1
-    return;
-end
+ lenlin = length(lines);
+ if lenlin == 0
+     outputangle = 400;
+     return;
+ end
 
 %delete hough lines not originating from origin of face
 y=0; x=0;
@@ -30,6 +28,12 @@ if lenlin > 0
                     y = y + lines(lenlin - k+1).point1(2);
         else % if not near center, delete struct
                     lines(lenlin - k+1) = [];
+                    % if all lines are not near center, no value is printed
+                    i = i + 1;
+                    if i == lenlin
+                        outputangle = 400;
+                        return
+                    end
         end
     end
     lenlin = length(lines);
@@ -39,7 +43,7 @@ if lenlin > 0
     xr = x - centerx;
     yr = centery - y;
     [anglez, ~] = cart2pol(xr,yr);
-    anglezdeg = anglez/pi*180;
+    outputangle = anglez/pi*180;
 end
 
 %plot lines
@@ -54,8 +58,8 @@ end
 
 % highlight the longest line segment
 plot([centerx x],[centery y],'LineWidth',2,'Color','red');
-caption = sprintf(['%.1f^o'], anglezdeg);
-text(10, 20, caption, 'Clipping',1,'BackgroundColor','black',...
-    'FontSize', 20, 'color', 'red');
-hold off;
+% caption = sprintf(['%.1f^o'], outputangle);
+% text(10, 20, caption, 'Clipping',1,'BackgroundColor','black',...
+%     'FontSize', 20, 'color', 'red');
+% hold off;
 end
