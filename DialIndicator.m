@@ -1,14 +1,14 @@
-function  [outputlarge,outputsmall] = DialIndicator(inputsmall,inputlarge)
+function  [outputlarge,outputsmall] = DialIndicator()
 %uses Webcam Support Package
-clc; format compact; close all;
+format compact; close all;
 
 %use the next line to load an image
-    I = imread('FakeGage.png'); %%Opens Image File
+    I = imread('FakeGage2.png'); %%Opens Image File
 %use the next two lines to load webcam photo
     %cam = webcam('Logitech HD Webcam C310'); % 480x640 pixel image
     %I = snapshot(cam);
     %imwrite(I,'FakeGage3.png');
-[Size ~] = size(I); %tailors big circle size to 
+[Size, ~] = size(I); %tailors big circle size to 
 tarsize(1) = round((Size-50)/2 - 70,-1); %may have to be adjusted for new webcam
 tarsize(2) = round((Size-50)/2 + 30,-1); %target size (large face)
 starsize = round(tarsize./4,-1); %small target size (small face)
@@ -51,9 +51,10 @@ outputsmall = PlotLines(linesS,BWC);
     if outputsmall == 400
        smallnumber = 11;
        while (smallnumber < 0 || smallnumber >= 10)
-          smallnumber = str2double(inputdlg('Enter the number the small gauge hand is on. Enter an X.5 if it is between two numbers (i.e., 3.5 for between numbers 3 and 4).',...
-           'Indeterminate Small Hand Angle',[1 30]))
+          smallnumber = str2double(inputdlg('Enter the number the small hand has is nearest.',...
+           'Indeterminate Small Hand Angle',[1 30]));
        end
+       outputsmall = 400 + smallnumber;
     end
 hold off;
 
