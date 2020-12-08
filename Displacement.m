@@ -53,8 +53,4 @@ end
    % total small angle movement gives approximate total displacement
    % that gives a range the large hand should be in
    % calculated difference between lage hand angles + 360*n
-
-
-
-
 end
